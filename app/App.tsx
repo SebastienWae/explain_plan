@@ -141,9 +141,18 @@ function ExplainSnippet({ databaseKey }: { databaseKey: DatabaseKey }) {
   );
 }
 
-function QueryEditor({ databaseKey }: { databaseKey: DatabaseKey }) {
-  const [plan, setPlan] = useState<string>("");
+function QueryEditor({
+  databaseKey,
+  plans,
+  setPlans,
+}: {
+  databaseKey: DatabaseKey;
+  plans: Record<string, string>;
+  setPlans: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+}) {
   const database = DATABASES[databaseKey];
+  const plan = plans[databaseKey] ?? "";
+  const setPlan = (value: string) => setPlans((prev) => ({ ...prev, [databaseKey]: value }));
   return (
     <div>
       <Textarea
@@ -156,7 +165,10 @@ function QueryEditor({ databaseKey }: { databaseKey: DatabaseKey }) {
         <Select
           value=""
           onValueChange={(value) => {
-            setPlan(database.examples[value as keyof typeof database.examples]);
+            const example = database.examples[value as keyof typeof database.examples];
+            if (example !== undefined) {
+              setPlan(example);
+            }
           }}
         >
           <SelectTrigger>
@@ -206,7 +218,7 @@ function PrivacyNotice() {
 
 function App() {
   const [selectedDb, setSelectedDb] = useState<DatabaseKey>("postgresql");
-
+  const [plans, setPlans] = useState<Record<string, string>>({});
   return (
     <div className="min-h-screen w-full relative">
       <Background />
@@ -216,7 +228,7 @@ function App() {
           <Header />
           <DatabaseToggle selectedDb={selectedDb} onChange={setSelectedDb} />
           <ExplainSnippet databaseKey={selectedDb} />
-          <QueryEditor databaseKey={selectedDb} />
+          <QueryEditor databaseKey={selectedDb} plans={plans} setPlans={setPlans} />
           <PrivacyNotice />
         </div>
       </div>
