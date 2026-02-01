@@ -66,7 +66,7 @@ function SocialLinks() {
           size="icon"
           nativeButton={false}
           render={
-            <a href="https://github.com/example/repo" rel="noreferrer" target="_blank">
+            <a href="https://github.com/SebastienWae/explain" rel="noreferrer" target="_blank">
               <IconBrandGithub />
             </a>
           }
@@ -76,7 +76,7 @@ function SocialLinks() {
           size="icon"
           nativeButton={false}
           render={
-            <a href="https://x.com/example" rel="noreferrer" target="_blank">
+            <a href="https://x.com/Seb_Wae" rel="noreferrer" target="_blank">
               <IconBrandX />
             </a>
           }
@@ -206,7 +206,7 @@ function PrivacyNotice() {
         variant="secondary"
         nativeButton={false}
         render={
-          <a href="https://github.com">
+          <a href="https://github.com/SebastienWae/explain" rel="noreferrer" target="_blank">
             <IconExternalLink />
             run locally
           </a>
