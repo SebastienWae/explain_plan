@@ -48,7 +48,7 @@ function Background() {
       className="absolute inset-0 z-0 bg-background"
       style={{
         backgroundImage:
-          "radial-gradient(circle at 25% 25%, #222222 0.5px, transparent 1px), radial-gradient(circle at 75% 75%, #111111 0.5px, transparent 1px)",
+          "radial-gradient(circle at 25% 25%, #222222 1px, transparent 1px), radial-gradient(circle at 75% 75%, #111111 1px, transparent 1px)",
         backgroundSize: "10px 10px",
         imageRendering: "pixelated",
       }}
