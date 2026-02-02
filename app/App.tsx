@@ -13,27 +13,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-
-const DATABASES = {
-  duckdb: {
-    name: "DuckDB",
-    explain_query: "EXPLAIN (ANALYZE, FORMAT JSON)\n[your-query]",
-    examples: {
-      "duck test 1": "duckdb",
-    },
-  },
-  postgresql: {
-    name: "PostgreSQL",
-    explain_query: "EXPLAIN (ANALYZE, FORMAT JSON, VERBOSE, BUFFERS)\n[your-query]",
-    examples: {
-      "ps test 1": "postgresql1",
-      "ps test 2": "postgresql2",
-    },
-  },
-} as const;
-
-type Databases = typeof DATABASES;
-type DatabaseKey = keyof Databases;
+import { DATABASES, type DatabaseKey } from "@/data/databases";
 
 function Background() {
   return (
@@ -145,7 +125,23 @@ function QueryEditor({
 }) {
   const database = DATABASES[databaseKey];
   const plan = plans[databaseKey] ?? "";
+  const [examplesByDb, setExamplesByDb] = useState<Partial<Record<DatabaseKey, Record<string, string>>>>({});
+  const [isLoadingExamples, setIsLoadingExamples] = useState(false);
   const setPlan = (value: string) => setPlans((prev) => ({ ...prev, [databaseKey]: value }));
+
+  const examples = examplesByDb[databaseKey];
+
+  const loadExamples = async () => {
+    if (examples || isLoadingExamples) return;
+    setIsLoadingExamples(true);
+    try {
+      const loaded = await database.loadExamples();
+      setExamplesByDb((prev) => ({ ...prev, [databaseKey]: loaded }));
+    } finally {
+      setIsLoadingExamples(false);
+    }
+  };
+
   return (
     <div className="group rounded-md border border-input bg-secondary overflow-hidden transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30">
       <Textarea
@@ -157,19 +153,21 @@ function QueryEditor({
         <Select
           key={databaseKey}
           value=""
+          onOpenChange={loadExamples}
           onValueChange={(value) => {
-            const example = database.examples[value as keyof typeof database.examples];
-            if (example !== undefined) {
+            if (!value) return;
+            const example = examples?.[value];
+            if (example) {
               setPlan(example);
             }
           }}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="examples" />
+          <SelectTrigger disabled={isLoadingExamples}>
+            <SelectValue placeholder={isLoadingExamples ? "loading..." : "examples"} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Object.keys(database.examples).map((exampleKey) => (
+              {database.exampleKeys.map((exampleKey) => (
                 <SelectItem key={exampleKey} value={exampleKey}>
                   {exampleKey}
                 </SelectItem>
