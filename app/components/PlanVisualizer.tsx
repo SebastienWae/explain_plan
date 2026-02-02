@@ -27,6 +27,7 @@ export function PlanVisualizer({
         <ToggleGroup
           variant="outline"
           size="lg"
+          className="bg-background"
           value={[viewMode]}
           onValueChange={(value) => {
             const [next] = value as ViewMode[];
