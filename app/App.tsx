@@ -1,12 +1,17 @@
 import { IconBrandGithub, IconBrandX, IconExternalLink, IconInfoCircle, IconSchema } from "@tabler/icons-react";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { PlanEditor } from "@/components/PlanEditor";
-import { PlanVisualizer } from "@/components/PlanVisualizer";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import type { DatabaseKey } from "@/data/databases";
 
 type View = "editor" | "visualizer";
+
+const PlanVisualizer = lazy(() =>
+  import("@/components/PlanVisualizer").then((module) => ({
+    default: module.PlanVisualizer,
+  })),
+);
 
 function Background() {
   return (
@@ -106,7 +111,18 @@ function App() {
               onSubmit={() => setView("visualizer")}
             />
           ) : (
-            <PlanVisualizer databaseKey={selectedDb} plan={currentPlan} onBack={() => setView("editor")} />
+            <Suspense
+              fallback={
+                <div className="flex flex-1 min-h-0 items-center justify-center rounded-md border border-input bg-secondary p-6 text-sm text-muted-foreground">
+                  <div className="inline-flex items-center gap-2">
+                    <span className="size-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+                    Loading visualizer...
+                  </div>
+                </div>
+              }
+            >
+              <PlanVisualizer databaseKey={selectedDb} plan={currentPlan} onBack={() => setView("editor")} />
+            </Suspense>
           )}
         </main>
         <footer className="mt-4">
