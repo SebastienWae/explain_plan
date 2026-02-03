@@ -82,7 +82,7 @@ function PrivacyNotice() {
 }
 
 function App() {
-  const [selectedDb, setSelectedDb] = useState<DatabaseKey>("duckdb");
+  const [selectedDb, setSelectedDb] = useState<DatabaseKey>("postgresql");
   const [plans, setPlans] = useState<Record<string, string>>({});
   const [view, setView] = useState<View>("editor");
 
