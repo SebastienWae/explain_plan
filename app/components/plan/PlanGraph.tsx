@@ -11,7 +11,7 @@ import {
 import { useMemo } from "react";
 import { CteGroupNode } from "@/components/plan/CteGroupNode";
 import { PlanNode } from "@/components/plan/PlanNode";
-import { formatCount } from "@/lib/plan/format";
+import { formatCount, formatMs } from "@/lib/plan/format";
 import type { NormalizedPlanGraph, NormalizedPlanNode, PlanEdge } from "@/lib/plan/normalize";
 
 const NODE_WIDTH = 240;
@@ -305,8 +305,24 @@ export function PlanGraph({
     }
   };
 
+  const summaryItems = [
+    { label: "Execution time", value: formatMs(graph.stats.executionTimeMs) },
+    { label: "Planning time", value: formatMs(graph.stats.planningTimeMs) },
+  ];
+
   return (
-    <div className="flex-1 min-h-0 w-full overflow-hidden rounded-md border border-input bg-background">
+    <div className="relative flex-1 min-h-0 w-full overflow-hidden rounded-md border border-input bg-background">
+      <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-wrap gap-2">
+        {summaryItems.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-md border border-input bg-background/90 px-3 py-2 text-xs shadow-sm shadow-black/30"
+          >
+            <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{item.label}</div>
+            <div className="text-sm font-semibold text-foreground tabular-nums">{item.value}</div>
+          </div>
+        ))}
+      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}
