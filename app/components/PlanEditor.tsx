@@ -71,6 +71,7 @@ export function PlanEditor({
   const setPlan = (value: string) => setPlans((prev) => ({ ...prev, [selectedDb]: value }));
 
   const examples = examplesByDb[selectedDb];
+  const exampleKeys = Object.keys(examples ?? {});
 
   const loadExamples = async () => {
     if (examples || isLoadingExamples) return;
@@ -111,7 +112,7 @@ export function PlanEditor({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {database.exampleKeys.map((exampleKey) => (
+                {exampleKeys.map((exampleKey) => (
                   <SelectItem key={exampleKey} value={exampleKey}>
                     {exampleKey}
                   </SelectItem>

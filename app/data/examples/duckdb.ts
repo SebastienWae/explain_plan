@@ -236,6 +236,82 @@ const duckdbExamples = {
         }
     ]
 }`,
+  "rows heavy": `{
+    "cpu_time": 0.12,
+    "children": [
+        {
+            "operator_name": "SEQ_SCAN",
+            "operator_type": "TABLE_SCAN",
+            "operator_timing": 0.08,
+            "operator_cardinality": 10000,
+            "operator_rows_scanned": 10000,
+            "result_set_size": 200000,
+            "extra_info": {
+                "Table": "orders",
+                "Estimated Cardinality": "100"
+            },
+            "children": []
+        },
+        {
+            "operator_name": "FILTER",
+            "operator_type": "FILTER",
+            "operator_timing": 0.02,
+            "operator_cardinality": 100,
+            "operator_rows_scanned": 10000,
+            "result_set_size": 2000,
+            "extra_info": {
+                "Estimated Cardinality": "100"
+            },
+            "children": []
+        }
+    ]
+}`,
+  "result heavy": `{
+    "cpu_time": 0.09,
+    "children": [
+        {
+            "operator_name": "PROJECTION",
+            "operator_type": "PROJECTION",
+            "operator_timing": 0.04,
+            "operator_cardinality": 200,
+            "operator_rows_scanned": 200,
+            "result_set_size": 900000,
+            "extra_info": {
+                "Estimated Cardinality": "200"
+            },
+            "children": []
+        },
+        {
+            "operator_name": "FILTER",
+            "operator_type": "FILTER",
+            "operator_timing": 0.02,
+            "operator_cardinality": 50,
+            "operator_rows_scanned": 200,
+            "result_set_size": 10000,
+            "extra_info": {
+                "Estimated Cardinality": "50"
+            },
+            "children": []
+        }
+    ]
+}`,
+  "slow operator": `{
+    "cpu_time": 0.5,
+    "children": [
+        {
+            "operator_name": "HASH_JOIN",
+            "operator_type": "HASH_JOIN",
+            "operator_timing": 0.45,
+            "operator_cardinality": 120,
+            "operator_rows_scanned": 240,
+            "result_set_size": 48000,
+            "extra_info": {
+                "Estimated Cardinality": "120"
+            },
+            "children": []
+        }
+    ]
+}`,
 };
 
 export default duckdbExamples;
