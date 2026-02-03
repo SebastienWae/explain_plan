@@ -306,7 +306,7 @@ export function PlanGraph({
   };
 
   return (
-    <div className="flex-1 min-h-0 w-full rounded-md border border-input bg-background">
+    <div className="flex-1 min-h-0 w-full overflow-hidden rounded-md border border-input bg-background">
       <ReactFlow
         nodes={nodes}
         edges={edges}
