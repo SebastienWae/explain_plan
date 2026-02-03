@@ -25,9 +25,12 @@ function splitLabel(label: string) {
 }
 
 function formatPercent(value: number) {
+  if (value === 0) return "0.00%";
   if (value >= 100) return `${Math.round(value)}%`;
   if (value >= 10) return `${value.toFixed(1)}%`;
-  return `${value.toFixed(2)}%`;
+  if (value >= 1) return `${value.toFixed(2)}%`;
+  if (value >= 0.1) return `${value.toFixed(3)}%`;
+  return `${value.toFixed(4)}%`;
 }
 
 export function PlanNode({ data, selected }: NodeProps<PlanFlowNode>) {
@@ -35,7 +38,9 @@ export function PlanNode({ data, selected }: NodeProps<PlanFlowNode>) {
   const { metrics } = node;
   const selfTime = metrics.exclusiveTimeMs;
   const timePercent =
-    selfTime && stats.executionTimeMs ? Math.min(100, (selfTime / stats.executionTimeMs) * 100) : undefined;
+    selfTime !== undefined && stats.executionTimeMs
+      ? Math.min(100, (selfTime / stats.executionTimeMs) * 100)
+      : undefined;
   const costValue = metrics.cost ?? metrics.totalCost;
   const costPercent =
     costValue !== undefined && stats.maxTotalCost ? Math.min(100, (costValue / stats.maxTotalCost) * 100) : undefined;
