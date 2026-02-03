@@ -84,12 +84,12 @@ export function PlanEditor({
   };
 
   return (
-    <>
+    <div className="flex flex-1 min-h-0 flex-col gap-4">
       <DatabaseToggle selectedDb={selectedDb} onChange={onDbChange} />
       <ExplainSnippet databaseKey={selectedDb} />
-      <div className="group rounded-md border border-input bg-secondary overflow-hidden transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30">
+      <div className="group flex flex-1 min-h-0 flex-col overflow-hidden rounded-md border border-input bg-secondary transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30">
         <Textarea
-          className="min-h-96 max-h-[60vh] rounded-none border-0 bg-secondary dark:bg-secondary focus-visible:ring-0"
+          className="flex-1 min-h-0 rounded-none border-0 bg-secondary dark:bg-secondary focus-visible:ring-0 field-sizing-fixed"
           value={plan}
           onChange={(e) => setPlan(e.target.value)}
         />
@@ -127,6 +127,6 @@ export function PlanEditor({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

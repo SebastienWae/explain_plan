@@ -24,30 +24,28 @@ function Background() {
 
 function SocialLinks() {
   return (
-    <div className="absolute right-4 top-4 flex items-center gap-4">
-      <ButtonGroup>
-        <Button
-          variant="secondary"
-          size="icon"
-          nativeButton={false}
-          render={
-            <a href="https://github.com/SebastienWae/explain" rel="noreferrer" target="_blank">
-              <IconBrandGithub />
-            </a>
-          }
-        />
-        <Button
-          variant="secondary"
-          size="icon"
-          nativeButton={false}
-          render={
-            <a href="https://x.com/Seb_Wae" rel="noreferrer" target="_blank">
-              <IconBrandX />
-            </a>
-          }
-        />
-      </ButtonGroup>
-    </div>
+    <ButtonGroup>
+      <Button
+        variant="secondary"
+        size="icon"
+        nativeButton={false}
+        render={
+          <a href="https://github.com/SebastienWae/explain" rel="noreferrer" target="_blank">
+            <IconBrandGithub />
+          </a>
+        }
+      />
+      <Button
+        variant="secondary"
+        size="icon"
+        nativeButton={false}
+        render={
+          <a href="https://x.com/Seb_Wae" rel="noreferrer" target="_blank">
+            <IconBrandX />
+          </a>
+        }
+      />
+    </ButtonGroup>
   );
 }
 
@@ -91,12 +89,14 @@ function App() {
   const currentPlan = plans[selectedDb] ?? "";
 
   return (
-    <div className="min-h-screen w-full relative">
+    <div className="min-h-svh w-full relative">
       <Background />
-      <div className="relative flex flex-col w-full min-h-svh items-center justify-start px-4 pt-16">
-        <SocialLinks />
-        <div className="flex flex-col gap-4 w-full max-w-2xl xl:max-w-4xl">
+      <div className="relative flex min-h-svh w-full flex-col px-4 py-4">
+        <header className="flex items-center justify-between gap-4">
           <Header />
+          <SocialLinks />
+        </header>
+        <main className="mt-4 flex w-full flex-1 min-h-0 flex-col gap-4">
           {view === "editor" ? (
             <PlanEditor
               selectedDb={selectedDb}
@@ -108,8 +108,10 @@ function App() {
           ) : (
             <PlanVisualizer databaseKey={selectedDb} plan={currentPlan} onBack={() => setView("editor")} />
           )}
+        </main>
+        <footer className="mt-4">
           <PrivacyNotice />
-        </div>
+        </footer>
       </div>
     </div>
   );
